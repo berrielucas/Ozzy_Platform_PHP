@@ -1,0 +1,1 @@
+import{u as s,a as n,o as a,r,b as c,c as u}from"./index-CyU7WMZp.js";const l={__name:"HomeView",setup(i){const e=s(),o=n();return a(()=>{o.auth&&(o.userLogado.type==="client"?e.push({name:"visitas-cliente"}):e.push({name:"visitas"}))}),(m,p)=>{const t=r("v-main");return c(),u(t)}}};export{l as default};

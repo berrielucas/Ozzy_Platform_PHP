@@ -1,0 +1,1 @@
+import{a as o,B as n,u as a,o as u}from"./index-CyU7WMZp.js";const m={__name:"Auth",setup(r){const s=o(),e=n(),t=a();return u(()=>{s.token=e.params.token,e.meta.type==="client"?t.push({name:"new-pass-cliente"}):t.push({name:"new-pass"})}),()=>{}}};export{m as default};

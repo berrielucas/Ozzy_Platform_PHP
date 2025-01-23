@@ -1,0 +1,120 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+CREATE SCHEMA IF NOT EXISTS `pet_shopping` DEFAULT CHARACTER SET utf8 ;
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`Cliente` (
+  `idCliente` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(80) NULL DEFAULT NULL,
+  `telefone1` VARCHAR(15) NULL DEFAULT NULL,
+  `telefone2` VARCHAR(15) NULL DEFAULT NULL,
+  `email` VARCHAR(50) NULL DEFAULT NULL,
+  `senha` VARCHAR(255) NULL DEFAULT NULL,
+  `logradouro` VARCHAR(100) NULL DEFAULT NULL,
+  `cep` VARCHAR(9) NULL DEFAULT NULL,
+  `numero` VARCHAR(5) NULL DEFAULT NULL,
+  `cidade` VARCHAR(45) NULL DEFAULT NULL,
+  `estado` CHAR(2) NULL DEFAULT NULL,
+  `cpf` VARCHAR(14) NULL DEFAULT NULL,
+  PRIMARY KEY (`idCliente`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`Funcionario` (
+  `idFuncionario` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(80) NULL DEFAULT NULL,
+  `telefone1` VARCHAR(15) NULL DEFAULT NULL,
+  `telefone2` VARCHAR(15) NULL DEFAULT NULL,
+  `email` VARCHAR(50) NULL DEFAULT NULL,
+  `senha` VARCHAR(255) NULL DEFAULT NULL,
+  `logradouro` VARCHAR(100) NULL DEFAULT NULL,
+  `cep` VARCHAR(9) NULL DEFAULT NULL,
+  `numero` VARCHAR(5) NULL DEFAULT NULL,
+  `cidade` VARCHAR(45) NULL DEFAULT NULL,
+  `estado` CHAR(2) NULL DEFAULT NULL,
+  `cpf` VARCHAR(14) NULL DEFAULT NULL,
+  `ativo` INT NULL DEFAULT NULL,
+  `adm` INT NULL DEFAULT NULL,
+  PRIMARY KEY (`idFuncionario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`Animal` (
+  `idAnimal` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(50) NULL DEFAULT NULL,
+  `peso` DECIMAL(6,3) NULL DEFAULT NULL,
+  `nascimento` DATE NULL DEFAULT NULL,
+  `cor` VARCHAR(45) NULL DEFAULT NULL,
+  `observacao` VARCHAR(255) NULL DEFAULT NULL,
+  `idCliente` INT(11) NOT NULL,
+  PRIMARY KEY (`idAnimal`),
+  CONSTRAINT `fk_Animal_Cliente`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `pet_shopping`.`Cliente` (`idCliente`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`Visita` (
+  `idVisita` INT(11) NOT NULL AUTO_INCREMENT,
+  `data` DATETIME NULL DEFAULT NULL UNIQUE,
+  `concluido` TINYINT(4) NULL DEFAULT NULL,
+  `total` DECIMAL(7,2) NULL DEFAULT NULL,
+  `idAnimal` INT(11) NOT NULL,
+  `idCliente` INT(11) NOT NULL,
+  PRIMARY KEY (`idVisita`),
+  CONSTRAINT `fk_Visita_Animal1`
+    FOREIGN KEY (`idAnimal`)
+    REFERENCES `pet_shopping`.`Animal` (`idAnimal`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_Visita_Cliente1`
+    FOREIGN KEY (`idCliente`)
+    REFERENCES `pet_shopping`.`Cliente` (`idCliente`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`Servico` (
+  `idServico` INT(11) NOT NULL AUTO_INCREMENT,
+  `nome` VARCHAR(50) NULL DEFAULT NULL,
+  `descricao` VARCHAR(255) NULL DEFAULT NULL,
+  `preco` DECIMAL(7,2) NULL DEFAULT NULL,
+  PRIMARY KEY (`idServico`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE IF NOT EXISTS `pet_shopping`.`ServicoVisita` (
+  `idVisita` INT NOT NULL,
+  `idServico` INT NOT NULL,
+  `quantidade` INT NULL,
+  `preco` DECIMAL(7,2) NULL,
+  PRIMARY KEY (`idVisita`, `idServico`),
+  CONSTRAINT `fk_ServicoVisita_Visita1`
+    FOREIGN KEY (`idVisita`)
+    REFERENCES `pet_shopping`.`Visita` (`idVisita`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_ServicoVisita_Servico1`
+    FOREIGN KEY (`idServico`)
+    REFERENCES `pet_shopping`.`Servico` (`idServico`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+# Inserindo um usuário Administrador manualmente 
+# Credenciais
+# Email: admin@admin.com
+# Senha: Admin100605!@#$
+INSERT INTO funcionario (nome, email, senha) VALUES ("User administrador", "admin@admin.com", "b8264fdf35164711d9394700dc18a074");
